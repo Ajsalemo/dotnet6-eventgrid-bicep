@@ -4,7 +4,6 @@ using Azure.Messaging.EventGrid;
 using Azure.Identity;
 using Azure.Core.Serialization;
 using System.Text.Json;
-using System;
 
 namespace azure_webaps_linux_dotnet_eventgrid_example.Pages;
 
