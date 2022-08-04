@@ -1,0 +1,8 @@
+az deployment group create \
+    --resource-group="$RESOURCE_GROUP" \
+    --template-file ./app.bicep \
+    --parameters \
+        appServicePlanId="$APP_SERVICE_PLAN_ID" \
+        webAppName="$WEBAPP_NAME" \
+        location="$LOCATION" \
+        eventGridTopicEndpoint="$AZURE_EVENT_GRID_TOPIC_ENDPOINT"

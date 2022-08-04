@@ -18,31 +18,41 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
-        var azureEventGridTopicEndpoint = Environment.GetEnvironmentVariable("AZURE_EVENT_GRID_TOPIC_ENDPOINT");
-        EventGridPublisherClient client = new EventGridPublisherClient(
-            new Uri(azureEventGridTopicEndpoint),
-            new DefaultAzureCredential());
-
-        var myCustomDataSerializer = new JsonObjectSerializer(
-            new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-
-        // Add EventGridEvents to a list to publish to the topic
-        List<EventGridEvent> eventsList = new List<EventGridEvent>
+        try
         {
-            // EventGridEvent with custom model serialized to JSON
-            new EventGridEvent(
-                "OrderEventSubject",
-                "Order.EventType",
-                "1.0",
-                "EventGridOrderData"
-            )
-        };
+            Guid g = Guid.NewGuid();
+            var azureEventGridTopicEndpoint = Environment.GetEnvironmentVariable("AZURE_EVENT_GRID_TOPIC_ENDPOINT");
+            var message = "Order_" + g;
 
-        // Send the events
-        await client.SendEventsAsync(eventsList);
-        _logger.LogInformation("Sent a message to EventGrid..");
+            EventGridPublisherClient client = new EventGridPublisherClient(
+                new Uri("https://ansalemo-eventgrid.eastus-1.eventgrid.azure.net/api/events"),
+                new DefaultAzureCredential());
+
+            var myCustomDataSerializer = new JsonObjectSerializer(
+                new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+            // Add EventGridEvents to a list to publish to the topic
+            List<EventGridEvent> eventsList = new List<EventGridEvent>
+            {
+                // EventGridEvent with custom model serialized to JSON
+                new EventGridEvent(
+                    "OrderEventSubject",
+                    "Order.EventType",
+                    "1.0",
+                    message
+                )
+            };
+
+            // Send the events
+            await client.SendEventsAsync(eventsList);
+            _logger.LogInformation("Sent a message to EventGrid, message: " + message);
+            }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 }
