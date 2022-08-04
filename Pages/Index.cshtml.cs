@@ -25,7 +25,7 @@ public class IndexModel : PageModel
             var message = "Order_" + g;
 
             EventGridPublisherClient client = new EventGridPublisherClient(
-                new Uri("https://ansalemo-eventgrid.eastus-1.eventgrid.azure.net/api/events"),
+                new Uri(azureEventGridTopicEndpoint),
                 new DefaultAzureCredential());
 
             var myCustomDataSerializer = new JsonObjectSerializer(
