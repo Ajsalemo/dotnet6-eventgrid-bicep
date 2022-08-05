@@ -41,7 +41,7 @@ resource eventGrid 'Microsoft.EventGrid/topics@2022-06-15' = {
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   scope: eventGrid
   // This is an abitrary name
-  name: guid(eventGrid.id, resourceGroup().id, subscription().id)
+  name: guid(eventGrid.id, resourceGroup().id, subscription().id, eventGridName)
   properties: {
     // Role definition ID of the EventGrid Data Sender Role - /providers/Microsoft.Authorization/roleDefinitions/d5a91429-5739-47e2-a06b-3470a27159e7
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/d5a91429-5739-47e2-a06b-3470a27159e7'
